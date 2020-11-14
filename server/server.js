@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+// Used to promisfy request
 const util = require("util");
 const request = require("request");
 const path = require("path");
@@ -123,6 +124,7 @@ const streamTweets = (socket, token) => {
       .on("data", (data) => {
         try {
           const json = JSON.parse(data);
+          // Twitter connection issue
           if (json.connection_issue) {
             socket.emit("error", json);
             reconnect(stream, socket, token);
@@ -155,6 +157,7 @@ const reconnect = async (stream, socket, token) => {
 };
 
 io.on("connection", async (socket) => {
+  console.log('attemption io connection');
   try {
     const token = BEARER_TOKEN;
     io.emit("connect", "Client connected");
